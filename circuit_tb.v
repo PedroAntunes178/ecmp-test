@@ -17,8 +17,9 @@ module circuit_tb;
       $dumpfile("circuit.vcd");
       $dumpvars();
       en=0;
+      x=$random;
       for (i=0; i<100; i=i+1) begin
-         @(posedge clk) #1 x=$random%10; en=1;
+         @(posedge clk) #1 x=$random; en=1;
          $display("%d: %d",i+1, y);
       end
 
