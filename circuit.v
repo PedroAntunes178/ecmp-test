@@ -10,16 +10,19 @@ module circuit
    `INPUT(rst,1),
    `INPUT(clk,1),
    `INPUT(en,1),
-   `OUTPUT(f,W)
+   `INPUT(x,W),
+   `OUTPUT(y,W)
    );
    `SIGNAL(cnt, 7)
-   `SIGNAL(f_final, W)
-   `SIGNAL(f_final_1, W)
-   `SIGNAL(f_final_2, W)
-   `SIGNAL2OUT(f, f_final)
+   `SIGNAL(y_final, W)
+   `SIGNAL(y_final_1, W)
+   `SIGNAL2OUT(y, y_final)
 
-   `REG_RE(clk, rst, 1'b0, en & (cnt!=99), f_final_1, f_final)
-   `REG_RE(clk, rst, 1'b0, en & (cnt!=99), f_final_2, f_final_1)
+
+   `SIGNAL(acc, W)
+   `ACC_ARE(clk, rst, 1'b0, en, acc, x)
+
+   `REG_RE(clk, rst, 1'b0, en & (cnt!=99), y_final_1, y_final)
    `COUNTER_RE(clk, rst, en & (cnt!=99), cnt)
-   `COMB f_final = f_final_1 + f_final_2 + (cnt == 1'b1);
+   `COMB y_final = y_final_1 + y_final_1 + acc + (cnt == 1'b1);
 endmodule
